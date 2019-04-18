@@ -1,5 +1,6 @@
 import io
 import json
+import base64
 from flask import Flask, request, redirect, url_for, render_template, jsonify
 import torch
 import torch.nn.functional as F 
@@ -34,23 +35,16 @@ def prepare_image(image):
         image = image.cuda()
     return torch.autograd.Variable(image, volatile=True)
 
-@app.route("/upload")
-def upload():
-    return render_template('upload.html')
-
-@app.route("/uploader", methods=["GET", "POST"])
-def uploader():
-    if request.method == "POST":
-        f = request.files['image']
-        f.save(secure_filename(f.filename))
-        return 'file uploaded successfully'
+@app.route("/")
+def index():
+    return render_template('index.html')
 
 
 @app.route("/predict", methods=["POST"])
 def predict():
     data = {"success": False}
     if request.method == "POST":
-        image = request.files['image'].read()
+        image = base64.decodestring(request.form['image'].encode('utf-8'))
         # Read file in PIL format
         image = Image.open(io.BytesIO(image))
 
@@ -68,6 +62,6 @@ def predict():
 if __name__=='__main__':
     print("Loading pytorch and flask")
     print("Please wait ...")
-    app.run()
+    app.run(debug=True)
 
 

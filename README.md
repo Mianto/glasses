@@ -1,7 +1,7 @@
 Glasses
 ---
 Checks if the image is having any glasses or not
-
+![Working Image]()
 Technologies used
 ---
 * PyTorch
@@ -15,7 +15,8 @@ Main Things Learnt
 
 Features to add
 ---
-* Make Webapp more presentable
-* Add webcam support to take pictures on the page
+- [x] Add webcam support to take pictures on the page
+- [ ] Make Predict page to render HTML instead of JSON
+- [ ] Make homepage more presentable
 
 

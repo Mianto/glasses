@@ -1,0 +1,31 @@
+.container{
+  position: relative;
+  top: 10vh;
+  left: 15vw;
+  width: 60vw;
+  height: 40vh;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-between;
+
+}
+
+#camera {
+    margin-left: 10vw;
+}
+
+#submit {
+    height: 40px;
+    margin-right: 80px;
+}
+
+#snap {
+    height: 40px;
+    margin-left: 10vw;
+}
+
+#unfreeze {
+    height: 40px;
+}
