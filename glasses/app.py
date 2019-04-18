@@ -11,6 +11,7 @@ app = Flask(__name__)
 use_gpu = False
 classes = ['glasses', 'no-glasses']
 app.config['UPLOAD_FOLDER'] = r"C:\Users\Siddhant\Documents\Glasses\glasses\files"
+app.config["SECRET_KEY"] = "secret key"
 
 def load_model(path):
 
