@@ -1,43 +1,85 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <script src="../static/webcam.js"></script>
-        <link rel="stylesheet" href="../static/main.css">
+        <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+        <script src="{{ url_for('static', filename='webcam.js') }}"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
     </head>
     <body>
         <div class="container">
             <div id="camera"></div>
+            <div id="result"></div>
             <div class="buttons">
-                <button id="snap" onclick="takeSnapshot()">Take Snapshot</button>
-                <button id="unfreeze" onclick="unfreeze()">Unfreeze</button>
-                <form action="{{ url_for('predict') }}" method="post" enctype="multipart/form-data">
+
+                <form action="{{ url_for('predict') }}" method="post" enctype="multipart/form-data" id="form">
                     <input id="image" type="hidden" name="image" value="" required>
-                    <input id="submit" type="submit" value="Predict"/>
                 </form>
             </div>
         </div>
-        
 
-        <script language="Javascript">
-            Webcam.set({
-                width: 640,
-                height: 480,
-                image_format: 'jpeg'
+
+
+        <script>
+
+            $(window).on('load', function(){
+
+                //Setting Webcam dimensions
+                Webcam.set({
+                    width: 640,
+                    height: 480,
+                    image_format: 'jpeg'
+                });
+
+                // Attach Webcam feed to `#camera`
+                Webcam.attach("#camera");
+
+                setInterval(ajaxIt, 2000);
+
+                function ajaxIt(){
+
+                    takeSnapshot();
+                    $.ajax({
+                        url: "{{ url_for('predict') }}",
+                        method: "POST",
+                        data: $("#form").serialize(),
+                        success: function(result){
+                            // console.log(result);
+                            if(result.success == false){
+                                $("#result").text("Guess who wrote the faulty code :)");
+                            }else{
+                                if(result.prediction == "glasses"){
+
+                                    $("#result").html("<h2> I see you have made quite a <i>spectacle</i> &#128521; of yourself.</h2>");
+                                }else{
+                                    $("#result").html("<h2> Wear glasses during math 'cuz it helps in <b>DI-VISION</n> </h2>");
+                                }
+
+                            }
+                        }
+                    });
+
+                }
+
+                function unfreeze() {
+                    Webcam.unfreeze();
+                }
+
+                function takeSnapshot(){
+
+                    Webcam.snap(function(data_uri){
+                        var raw_image_data = data_uri.replace(/^data\:image\/\w+\;base64\,/, '');
+                        document.getElementById('image').value = raw_image_data;
+                    });
+                    // Webcam.freeze();
+                }
+
             });
 
-            Webcam.attach("#camera");
 
-            function unfreeze() {
-                Webcam.unfreeze();
-            }
 
-            function takeSnapshot(){
-                Webcam.snap(function(data_uri){
-                    var raw_image_data = data_uri.replace(/^data\:image\/\w+\;base64\,/, '');
-                    document.getElementById('image').value = raw_image_data;
-                });
-                Webcam.freeze();
-            }
         </script>
+
+
     </body>
 </html>

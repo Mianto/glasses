@@ -15,7 +15,6 @@ app.config['UPLOAD_FOLDER'] = r"C:\Users\Siddhant\Documents\Glasses\glasses\file
 app.config["SECRET_KEY"] = "secret key"
 
 def load_model(path):
-
     model = torch.load(path)
     model.eval()
     if use_gpu:
@@ -43,20 +42,20 @@ def index():
 @app.route("/predict", methods=["POST"])
 def predict():
     data = {"success": False}
-    if request.method == "POST":
+    if request.form['image']:
         image = base64.decodestring(request.form['image'].encode('utf-8'))
         # Read file in PIL format
         image = Image.open(io.BytesIO(image))
 
         image = prepare_image(image)
-        model = load_model(r"C:\Users\Siddhant\Documents\Glasses\glasses\model.pth")
+        model = load_model('model.pth')
         out = model(image)
         _, predicted = torch.max(out, 1)
 
         data['prediction'] = classes[predicted]
         data['success'] = True
         print(data)
-        
+
     return jsonify(data)
 
 if __name__=='__main__':
