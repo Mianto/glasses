@@ -21,4 +21,13 @@ Features to add
 - [x] Asynchronously add real time detection and witty comments [Thanks to @memahesh](https://github.com/Mianto/glasses/pull/1)
 - [ ] Make homepage more presentable
 
+Installation / Testing
+---
+- Clone the repository `git clone https://github.com/Mianto/glasses.git` and change the folder to Glasses.
+- Install the dependencies `pip install requirements.txt`
+- Change folder to `glasses` and run the flask app using `python app.py`
 
+Files
+---
+* `glasses.ipynb` used for training the model
+* `saliency.ipynb` gives the saliency map for the image
